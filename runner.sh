@@ -1,25 +1,32 @@
 STARTDATE=$(date)
 
-echo "$STARTDATE, Running $TARGET_NAME"
+echo "$STARTDATE, [$TARGET_NAME] running"
+
+cd `dirname $TARGET_SCRIPT` 
 
 $TARGET_SCRIPT $TARGET_OPTIONS &> /cron/output
 
 EXITCODE=$?
-
 ENDDATE=$(date)
 
-echo "To: $NOTIFY_TO" > /cron/mail
-echo "From: $NOTIFY_FROM" >> /cron/mail
-echo "Subject: Cron job \"$TARGET_NAME\": [$EXITCODE]" >> /cron/mail
-echo "" >> /cron/mail
+echo "$ENDDATE, [$TARGET_NAME] exited, $EXITCODE"
 
-echo "Start: $STARTDATE" >> /cron/mail
-echo "End: $ENDDATE" >> /cron/mail
-echo "Job name: $TARGET_NAME" >> /cron/mail
-echo "Exit code: $EXITCODE" >> /cron/mail
+if [ ! -z "${NOTIFY_TO}" ];
+then
+	echo "To: $NOTIFY_TO" > /cron/mail
+	echo "From: $NOTIFY_FROM" >> /cron/mail
+	echo "Subject: Cron job \"$TARGET_NAME\": $EXITCODE" >> /cron/mail
+	echo "" >> /cron/mail
 
-echo "---" >> /cron/mail
+	echo "Start: $STARTDATE" >> /cron/mail
+	echo "End: $ENDDATE" >> /cron/mail
+	echo "Job name: $TARGET_NAME" >> /cron/mail
+	echo "Exit code: $EXITCODE" >> /cron/mail
 
-cat /cron/output >> /cron/mail
+	echo "---" >> /cron/mail
 
-ssmtp $NOTIFY_TO < /cron/mail 
+	cat /cron/output >> /cron/mail
+
+	ssmtp $NOTIFY_TO < /cron/mail 
+fi
+

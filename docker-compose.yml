@@ -3,13 +3,15 @@ version: '3'
 services:
   cron:
     image: 'cron'
+    volumes:
+      - ./config:/config
     environment:
-      - TARGET_CRON=
-      - TARGET_SCRIPT=
-      - TARGET_NAME=
-      - NOTIFY_TO=
-      - NOTIFY_FROM=
-      - NOTIFY_HOST=
-      - NOTIFY_USER=
-      - NOTIFY_PASS=
-      - NOTIFY_STARTTLS=
+      - TARGET_CRON=*/1 * * * *
+      - TARGET_SCRIPT=/config/test.sh
+      - TARGET_NAME=test
+      - NOTIFY_TO=mtps@mtps.pl
+      - NOTIFY_FROM=cron@mtps.pl
+      - NOTIFY_HOST=mtps.pl:587
+      - NOTIFY_USER=cron@mtps.pl
+      - NOTIFY_PASS=y6rkpvFmufJ5sFRNmu3UotZGshfyJHWy
+      - NOTIFY_STARTTLS=YES
