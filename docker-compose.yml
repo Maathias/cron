@@ -5,13 +5,9 @@ services:
     image: 'cron'
     volumes:
       - ./config:/config
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    env_file: notify.env
     environment:
       - TARGET_CRON=*/1 * * * *
       - TARGET_SCRIPT=/config/test.sh
       - TARGET_NAME=test
-      - NOTIFY_TO=mtps@mtps.pl
-      - NOTIFY_FROM=cron@mtps.pl
-      - NOTIFY_HOST=mtps.pl:587
-      - NOTIFY_USER=cron@mtps.pl
-      - NOTIFY_PASS=y6rkpvFmufJ5sFRNmu3UotZGshfyJHWy
-      - NOTIFY_STARTTLS=YES
