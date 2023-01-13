@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  cron:
+    image: 'cron'
+    environment:
+      - TARGET_CRON=*/1 * * * *
+      - TARGET_SCRIPT=/cf-refresh.sh
+      - TARGET_NAME=eoeo
+      - NOTIFY_TO=sysadmin@mtps.pl
+      - NOTIFY_FROM=cron@mtps.pl
+      - NOTIFY_HOST=mtps.pl:587
+      - NOTIFY_USER=cron@mtps.pl
+      - NOTIFY_PASS=y6rkpvFmufJ5sFRNmu3UotZGshfyJHWy
+      - NOTIFY_STARTTLS=YES
+    volumes:
+      - ./cf-refresh.sh:/cf-refresh.sh
