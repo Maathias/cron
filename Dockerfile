@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk update
-RUN apk add ssmtp curl docker-cli
+RUN apk add ssmtp curl docker-cli docker-compose
 
 WORKDIR /cron
 
